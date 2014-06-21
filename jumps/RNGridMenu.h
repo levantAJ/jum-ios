@@ -124,6 +124,8 @@ typedef NS_ENUM(NSInteger, RNGridMenuStyle) {
 // If tapped outside the view, the menu is simply dismissed.
 - (void)dismissAnimated:(BOOL)animated;
 
++ (UIImage *)rn_boxblurImageWithBlur:(CGFloat)blur exclusionPath:(UIBezierPath *)exclusionPath;
+
 @end
 
 

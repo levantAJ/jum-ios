@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21275B1818F8F1F6000FF350 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 21275B1718F8F1F6000FF350 /* image.png */; };
+		21275B1A18F8F751000FF350 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 21275B1918F8F751000FF350 /* close.png */; };
 		212B53FD18F54EBD009285AB /* UIButton+Property.m in Sources */ = {isa = PBXBuildFile; fileRef = 212B53FC18F54EBD009285AB /* UIButton+Property.m */; };
 		213F587D18F45D6F00F829FB /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 213F587A18F45D6F00F829FB /* fire.png */; };
 		213F588918F475ED00F829FB /* chatchit.png in Resources */ = {isa = PBXBuildFile; fileRef = 213F588118F475ED00F829FB /* chatchit.png */; };
@@ -16,6 +18,8 @@
 		213F588D18F475ED00F829FB /* meteorite.png in Resources */ = {isa = PBXBuildFile; fileRef = 213F588518F475ED00F829FB /* meteorite.png */; };
 		213F588E18F475ED00F829FB /* routing.png in Resources */ = {isa = PBXBuildFile; fileRef = 213F588618F475ED00F829FB /* routing.png */; };
 		213F589118F4785D00F829FB /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 213F589018F4785D00F829FB /* camera.png */; };
+		21418E8B18FA2C82003D2AB4 /* lost.png in Resources */ = {isa = PBXBuildFile; fileRef = 21418E8918FA2C82003D2AB4 /* lost.png */; };
+		21418E8C18FA2C82003D2AB4 /* pin_lost.png in Resources */ = {isa = PBXBuildFile; fileRef = 21418E8A18FA2C82003D2AB4 /* pin_lost.png */; };
 		214BC6E218F38B8C00C7136F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214BC6E118F38B8C00C7136F /* MapKit.framework */; };
 		2165C47A18F3D1800093CA09 /* currentlocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 2165C47618F3D1800093CA09 /* currentlocation.png */; };
 		2165C47B18F3D1800093CA09 /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = 2165C47718F3D1800093CA09 /* minus.png */; };
@@ -26,6 +30,10 @@
 		2165C48818F3FB070093CA09 /* jam.png in Resources */ = {isa = PBXBuildFile; fileRef = 2165C48318F3FB070093CA09 /* jam.png */; };
 		2165C48918F3FB070093CA09 /* police.png in Resources */ = {isa = PBXBuildFile; fileRef = 2165C48418F3FB070093CA09 /* police.png */; };
 		2165C48A18F3FB070093CA09 /* rain.png in Resources */ = {isa = PBXBuildFile; fileRef = 2165C48518F3FB070093CA09 /* rain.png */; };
+		217F703D18F7AD4400828A65 /* Jumer.m in Sources */ = {isa = PBXBuildFile; fileRef = 217F703C18F7AD4400828A65 /* Jumer.m */; };
+		217F704018F7FE6400828A65 /* direction.png in Resources */ = {isa = PBXBuildFile; fileRef = 217F703E18F7FE6400828A65 /* direction.png */; };
+		217F704118F7FE6400828A65 /* option.png in Resources */ = {isa = PBXBuildFile; fileRef = 217F703F18F7FE6400828A65 /* option.png */; };
+		217F704518F8088500828A65 /* clip.png in Resources */ = {isa = PBXBuildFile; fileRef = 217F704418F8088500828A65 /* clip.png */; };
 		21831EF118F293B000F5971E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21831EF018F293B000F5971E /* Foundation.framework */; };
 		21831EF318F293B000F5971E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21831EF218F293B000F5971E /* CoreGraphics.framework */; };
 		21831EF518F293B000F5971E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21831EF418F293B000F5971E /* UIKit.framework */; };
@@ -40,6 +48,10 @@
 		21831F1218F293B100F5971E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21831EF418F293B000F5971E /* UIKit.framework */; };
 		21831F1A18F293B100F5971E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21831F1818F293B100F5971E /* InfoPlist.strings */; };
 		21831F1C18F293B100F5971E /* jumpsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21831F1B18F293B100F5971E /* jumpsTests.m */; };
+		21A16BCC18FE1F9E00561065 /* Love Is Complicated Again (Bold).ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21A16BCB18FE1F7700561065 /* Love Is Complicated Again (Bold).ttf */; };
+		21A16BCE18FE2CC900561065 /* satellite.png in Resources */ = {isa = PBXBuildFile; fileRef = 21A16BCD18FE2CC900561065 /* satellite.png */; };
+		21DD9BCD18FA263E00E44A2F /* robber.png in Resources */ = {isa = PBXBuildFile; fileRef = 21DD9BCC18FA263E00E44A2F /* robber.png */; };
+		21DD9BCF18FA293300E44A2F /* pin_robber.png in Resources */ = {isa = PBXBuildFile; fileRef = 21DD9BCE18FA293300E44A2F /* pin_robber.png */; };
 		21E3362918F4DC90007E674D /* TrafficAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E3362818F4DC90007E674D /* TrafficAnnotation.m */; };
 		21E3363518F4E664007E674D /* pin_accident.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E3362A18F4E664007E674D /* pin_accident.png */; };
 		21E3363618F4E664007E674D /* pin_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 21E3362B18F4E664007E674D /* pin_camera.png */; };
@@ -67,6 +79,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		21275B1718F8F1F6000FF350 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
+		21275B1918F8F751000FF350 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		212B53FB18F54EBD009285AB /* UIButton+Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Property.h"; sourceTree = "<group>"; };
 		212B53FC18F54EBD009285AB /* UIButton+Property.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Property.m"; sourceTree = "<group>"; };
 		213F587A18F45D6F00F829FB /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
@@ -77,6 +91,8 @@
 		213F588518F475ED00F829FB /* meteorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = meteorite.png; sourceTree = "<group>"; };
 		213F588618F475ED00F829FB /* routing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = routing.png; sourceTree = "<group>"; };
 		213F589018F4785D00F829FB /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		21418E8918FA2C82003D2AB4 /* lost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lost.png; sourceTree = "<group>"; };
+		21418E8A18FA2C82003D2AB4 /* pin_lost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_lost.png; sourceTree = "<group>"; };
 		214BC6E118F38B8C00C7136F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		214BC6E318F395BF00C7136F /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		2165C47618F3D1800093CA09 /* currentlocation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = currentlocation.png; sourceTree = "<group>"; };
@@ -89,6 +105,11 @@
 		2165C48318F3FB070093CA09 /* jam.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jam.png; sourceTree = "<group>"; };
 		2165C48418F3FB070093CA09 /* police.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = police.png; sourceTree = "<group>"; };
 		2165C48518F3FB070093CA09 /* rain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rain.png; sourceTree = "<group>"; };
+		217F703B18F7AD4400828A65 /* Jumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jumer.h; sourceTree = "<group>"; };
+		217F703C18F7AD4400828A65 /* Jumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Jumer.m; sourceTree = "<group>"; };
+		217F703E18F7FE6400828A65 /* direction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = direction.png; sourceTree = "<group>"; };
+		217F703F18F7FE6400828A65 /* option.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = option.png; sourceTree = "<group>"; };
+		217F704418F8088500828A65 /* clip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clip.png; sourceTree = "<group>"; };
 		21831EED18F293B000F5971E /* jumps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jumps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21831EF018F293B000F5971E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		21831EF218F293B000F5971E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -108,6 +129,10 @@
 		21831F1718F293B100F5971E /* jumpsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "jumpsTests-Info.plist"; sourceTree = "<group>"; };
 		21831F1918F293B100F5971E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		21831F1B18F293B100F5971E /* jumpsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = jumpsTests.m; sourceTree = "<group>"; };
+		21A16BCB18FE1F7700561065 /* Love Is Complicated Again (Bold).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Love Is Complicated Again (Bold).ttf"; sourceTree = "<group>"; };
+		21A16BCD18FE2CC900561065 /* satellite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = satellite.png; sourceTree = "<group>"; };
+		21DD9BCC18FA263E00E44A2F /* robber.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = robber.png; sourceTree = "<group>"; };
+		21DD9BCE18FA293300E44A2F /* pin_robber.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_robber.png; sourceTree = "<group>"; };
 		21E3362718F4DC90007E674D /* TrafficAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrafficAnnotation.h; sourceTree = "<group>"; };
 		21E3362818F4DC90007E674D /* TrafficAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrafficAnnotation.m; sourceTree = "<group>"; };
 		21E3362A18F4E664007E674D /* pin_accident.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_accident.png; sourceTree = "<group>"; };
@@ -153,6 +178,16 @@
 		2165C47518F3D1800093CA09 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				21A16BCD18FE2CC900561065 /* satellite.png */,
+				21418E8918FA2C82003D2AB4 /* lost.png */,
+				21418E8A18FA2C82003D2AB4 /* pin_lost.png */,
+				21DD9BCE18FA293300E44A2F /* pin_robber.png */,
+				21DD9BCC18FA263E00E44A2F /* robber.png */,
+				21275B1918F8F751000FF350 /* close.png */,
+				21275B1718F8F1F6000FF350 /* image.png */,
+				217F704418F8088500828A65 /* clip.png */,
+				217F703E18F7FE6400828A65 /* direction.png */,
+				217F703F18F7FE6400828A65 /* option.png */,
 				21E3364818F50A87007E674D /* information.png */,
 				21E3364618F5046B007E674D /* anonymous.png */,
 				21E3362A18F4E664007E674D /* pin_accident.png */,
@@ -233,6 +268,8 @@
 				21E3362818F4DC90007E674D /* TrafficAnnotation.m */,
 				212B53FB18F54EBD009285AB /* UIButton+Property.h */,
 				212B53FC18F54EBD009285AB /* UIButton+Property.m */,
+				217F703B18F7AD4400828A65 /* Jumer.h */,
+				217F703C18F7AD4400828A65 /* Jumer.m */,
 			);
 			path = jumps;
 			sourceTree = "<group>";
@@ -240,6 +277,7 @@
 		21831EF718F293B000F5971E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				21A16BCB18FE1F7700561065 /* Love Is Complicated Again (Bold).ttf */,
 				2165C47518F3D1800093CA09 /* Images */,
 				21831EF818F293B000F5971E /* jumps-Info.plist */,
 				21831EF918F293B000F5971E /* InfoPlist.strings */,
@@ -344,13 +382,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21A16BCC18FE1F9E00561065 /* Love Is Complicated Again (Bold).ttf in Resources */,
 				213F587D18F45D6F00F829FB /* fire.png in Resources */,
+				217F704518F8088500828A65 /* clip.png in Resources */,
 				213F588E18F475ED00F829FB /* routing.png in Resources */,
 				21E3363F18F4E664007E674D /* pin_routing.png in Resources */,
+				21418E8C18FA2C82003D2AB4 /* pin_lost.png in Resources */,
+				217F704018F7FE6400828A65 /* direction.png in Resources */,
+				21418E8B18FA2C82003D2AB4 /* lost.png in Resources */,
 				21831F0918F293B100F5971E /* Images.xcassets in Resources */,
 				21E3364718F5046B007E674D /* anonymous.png in Resources */,
 				213F588D18F475ED00F829FB /* meteorite.png in Resources */,
 				21831EFB18F293B000F5971E /* InfoPlist.strings in Resources */,
+				21275B1A18F8F751000FF350 /* close.png in Resources */,
 				2165C48618F3FB070093CA09 /* accident.png in Resources */,
 				21E3364918F50A87007E674D /* information.png in Resources */,
 				21E3363818F4E664007E674D /* pin_fire.png in Resources */,
@@ -366,11 +410,16 @@
 				21E3363C18F4E664007E674D /* pin_meteorite.png in Resources */,
 				21E3363918F4E664007E674D /* pin_gas.png in Resources */,
 				21831F0418F293B000F5971E /* Main.storyboard in Resources */,
+				21275B1818F8F1F6000FF350 /* image.png in Resources */,
+				21DD9BCF18FA293300E44A2F /* pin_robber.png in Resources */,
 				2165C47C18F3D1800093CA09 /* plus.png in Resources */,
+				21A16BCE18FE2CC900561065 /* satellite.png in Resources */,
 				21E3363718F4E664007E674D /* pin_constructor.png in Resources */,
 				21E3363618F4E664007E674D /* pin_camera.png in Resources */,
 				2165C48918F3FB070093CA09 /* police.png in Resources */,
 				21E3363D18F4E664007E674D /* pin_police.png in Resources */,
+				21DD9BCD18FA263E00E44A2F /* robber.png in Resources */,
+				217F704118F7FE6400828A65 /* option.png in Resources */,
 				213F589118F4785D00F829FB /* camera.png in Resources */,
 				21E3363E18F4E664007E674D /* pin_rain.png in Resources */,
 				213F588A18F475ED00F829FB /* constructor.png in Resources */,
@@ -394,6 +443,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				217F703D18F7AD4400828A65 /* Jumer.m in Sources */,
 				21831F0718F293B100F5971E /* ViewController.m in Sources */,
 				21831F0118F293B000F5971E /* AppDelegate.m in Sources */,
 				212B53FD18F54EBD009285AB /* UIButton+Property.m in Sources */,
@@ -526,6 +576,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "jumps/jumps-Prefix.pch";
 				INFOPLIST_FILE = "jumps/jumps-Info.plist";
@@ -541,6 +592,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "jumps/jumps-Prefix.pch";
 				INFOPLIST_FILE = "jumps/jumps-Info.plist";

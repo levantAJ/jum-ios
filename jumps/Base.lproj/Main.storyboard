@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6154.17" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6153.11"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -13,62 +13,125 @@
                         <viewControllerLayoutGuide type="bottom" id="giZ-Va-NdD"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wgc-pa-V3L">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vaZ-MT-KiW">
-                                <rect key="frame" x="20" y="380" width="36" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="plus.png">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L6c-0y-Lkt">
+                                <rect key="frame" x="264" y="506" width="36" height="42"/>
+                                <state key="normal" image="option.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="zoomsIn:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="XjV-EZ-wnX"/>
+                                    <action selector="reporting:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="JZ2-uJ-baA"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DUA-GP-34J">
-                                <rect key="frame" x="20" y="422" width="36" height="38"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="minus.png">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ywH-bG-441">
+                                <rect key="frame" x="20" y="523" width="32" height="25"/>
+                                <state key="normal" image="direction.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="zoomsOut:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="5r5-cL-DXI"/>
+                                    <action selector="currentLocation:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Kki-ii-GX7"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2x7-NB-GJh">
-                                <rect key="frame" x="264" y="422" width="36" height="38"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="report.png">
+                            <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="31x-TZ-Lbo">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nKo-bo-No2">
+                                <rect key="frame" x="29" y="181" width="263" height="206"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="jam.png" translatesAutoresizingMaskIntoConstraints="NO" id="hof-ax-EtI">
+                                        <rect key="frame" x="20" y="20" width="41" height="41"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="reportTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NCU-rf-HBO">
+                                        <rect key="frame" x="69" y="30" width="174" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="reportTime" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jp6-K5-fOt">
+                                        <rect key="frame" x="20" y="67" width="194" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="reportUser" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mD-hU-xbc">
+                                        <rect key="frame" x="20" y="89" width="223" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mib-ts-nQX">
+                                        <rect key="frame" x="222" y="63" width="25" height="25"/>
+                                        <state key="normal" image="image.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="viewReportImage:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="UyL-9k-u1W"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="reportDetail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbg-Wc-JQk">
+                                        <rect key="frame" x="20" y="118" width="223" height="68"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your name (Anonymous)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KHh-sw-p15">
+                                        <rect key="frame" x="20" y="96" width="223" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Detail..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="a0B-IC-N0o">
+                                        <rect key="frame" x="20" y="134" width="223" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eZf-ql-X0J">
+                                        <rect key="frame" x="197" y="171" width="46" height="30"/>
+                                        <state key="normal" title="share">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="shareReport:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9jE-hz-ad8"/>
+                                        </connections>
+                                    </button>
+                                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5Y-mO-Ddw">
+                                        <rect key="frame" x="20" y="175" width="175" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </scrollView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MlY-tw-MXH">
+                                <rect key="frame" x="275" y="523" width="25" height="25"/>
+                                <state key="normal" image="close.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="reporting:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="lMO-WS-DOx"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajO-q8-coy">
-                                <rect key="frame" x="264" y="380" width="36" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="currentlocation.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="currentLocation:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="yVs-3Y-vJC"/>
+                                    <action selector="closeReportImage:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="zru-3c-sYf"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="btnCloseReportImage" destination="MlY-tw-MXH" id="eER-aN-aTA"/>
+                        <outlet property="btnReportImage" destination="mib-ts-nQX" id="LNV-mp-bf0"/>
+                        <outlet property="btnShare" destination="eZf-ql-X0J" id="lva-74-d9D"/>
+                        <outlet property="current" destination="ywH-bG-441" id="T2m-Sl-J2g"/>
+                        <outlet property="imgReportType" destination="hof-ax-EtI" id="q3x-gJ-fY2"/>
                         <outlet property="jumpsMapView" destination="wgc-pa-V3L" id="fqD-yg-9vR"/>
-                        <outlet property="mapType" destination="2x7-NB-GJh" id="gyl-01-nsG"/>
-                        <outlet property="report" destination="ajO-q8-coy" id="sWw-f9-GPV"/>
-                        <outlet property="zoomIn" destination="vaZ-MT-KiW" id="iKZ-E2-fIN"/>
-                        <outlet property="zoomOut" destination="DUA-GP-34J" id="pX9-Yd-O4O"/>
+                        <outlet property="lblMessage" destination="E5Y-mO-Ddw" id="3p9-M6-ObA"/>
+                        <outlet property="lblReportDetail" destination="lbg-Wc-JQk" id="hot-Ak-9d3"/>
+                        <outlet property="lblReportTime" destination="Jp6-K5-fOt" id="nAV-pL-9Gu"/>
+                        <outlet property="lblReportTitle" destination="NCU-rf-HBO" id="qEF-ke-Dqf"/>
+                        <outlet property="lblReportUser" destination="3mD-hU-xbc" id="a3U-RJ-dmh"/>
+                        <outlet property="parrentView" destination="31x-TZ-Lbo" id="8mz-zm-mVR"/>
+                        <outlet property="report" destination="L6c-0y-Lkt" id="WIn-rn-6E1"/>
+                        <outlet property="reportView" destination="nKo-bo-No2" id="UA3-G3-zg1"/>
+                        <outlet property="txtReportDetail" destination="a0B-IC-N0o" id="P7J-zP-dRb"/>
+                        <outlet property="txtUserName" destination="KHh-sw-p15" id="LNJ-1Z-pUL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -76,14 +139,15 @@
         </scene>
     </scenes>
     <resources>
-        <image name="currentlocation.png" width="36" height="42"/>
-        <image name="minus.png" width="36" height="38"/>
-        <image name="plus.png" width="36" height="42"/>
-        <image name="report.png" width="36" height="38"/>
+        <image name="close.png" width="68" height="68"/>
+        <image name="direction.png" width="67" height="66"/>
+        <image name="image.png" width="56" height="59"/>
+        <image name="jam.png" width="109" height="89"/>
+        <image name="option.png" width="54" height="69"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
 </document>

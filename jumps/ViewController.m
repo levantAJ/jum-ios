@@ -18,50 +18,66 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+//    CLLocationManager *manager = [[CLLocationManager alloc] init];
+//    [manager requestAlwaysAuthorization];
+    [[jumpsMapView.subviews objectAtIndex:1] removeFromSuperview];
     jumpsMapView.delegate = self;
     jumpsMapView.showsUserLocation = YES;
     // init pins
     [self initPins];
-    userName = @"Anonymous";
-    [self makeReportingView];
-    viewingReport = NO;
     
-}
+    //    [jumpsMapView.userLocation addObserver:self forKeyPath:@"location" options:(NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld) context:NULL];
+    
+    // Set font
+    [lblReportTime setFont:[UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:15]];
+    [lblReportTitle setFont:[UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:17]];
+    [lblReportUser setFont:[UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:15]];
+    [lblReportDetail setFont:[UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:17]];
+    [lblMessage setFont:[UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:13]];
+    
+    // Init parent view
 
--(void)makeReportingView{
-    parentsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    parentsView.backgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];
-    parentsView.opaque = NO;
-    parentsView.clipsToBounds = YES;
-
-    reportDetailView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 230, 350)];
-    reportDetailView.center = self.view.center;
-    reportDetailView.backgroundColor = [UIColor whiteColor];
+    // Init report view
+    reportView.center = self.view.center;
+    reportView.backgroundColor = [UIColor whiteColor];
     // rounded corner
-    reportDetailView.layer.cornerRadius =  8.f;
-    reportDetailView.layer.masksToBounds = YES;
+    reportView.layer.cornerRadius =  8.f;
+    reportView.layer.masksToBounds = YES;
     
-    //title
-    titleReported = [UIButton buttonWithType:UIButtonTypeCustom];
-    [reportDetailView addSubview:titleReported];
+    [txtReportDetail setDelegate:self];
+    [txtUserName setDelegate:self];
+    [txtReportDetail setFont:[UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:15]];
+    [txtUserName setFont:[UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:15]];
+    [[btnShare titleLabel] setFont:[UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:15]];
     
-    // time
-    timeReported = [[UILabel alloc] init];
-    [reportDetailView addSubview:timeReported];
+    sharedAnnotation = [[TrafficAnnotation alloc] init];
+    imageTakeAPhoto = @"";
+    imageTaken = [[UIImage alloc] init];
+    currentViewReportImage = @"";
+    sharedAnnotation.reportImage = @"";
+    userId = 0;
+    userName = @"Anonymous";
+    // Get user name and user id from database
+    NSString* data = [Jumer readStringFromFile:[Jumer USER_PATH]];
+    if ([data isEqualToString:@""]) {
+        [Jumer writeStringToFile:[Jumer parseUserToJSONObject:userId therUserName:userName] theFileName:[Jumer USER_PATH]];
+    }else{
+        NSDictionary* dict = [Jumer parseJSONObject:data];
+        if (dict!=nil) {
+            userName = [Jumer toOriginalString:[dict objectForKey:@"userName"]];
+            sharedAnnotation.title = userName;
+            userId = [[dict objectForKey:@"userId"] intValue];
+            sharedAnnotation.userId = userId;
+        }
+    }
     
-    // user
-    userReported = [[UILabel alloc] init];
-    [reportDetailView addSubview:userReported];
+    // Init dict contain annotations
+    annotationsArray = [[NSMutableArray alloc] init];
     
-    // detail
-    detailReported = [[UILabel alloc] init];
-    [reportDetailView addSubview:detailReported];
+    // Keyboard
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
-    // Image reported
-    imageReported = [[UIImageView alloc] init];
-    [reportDetailView addSubview:imageReported];
-    
-    [parentsView addSubview:reportDetailView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,28 +85,20 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    jumpsMapView.centerCoordinate = userLocation.location.coordinate;
-}
+#pragma IBAction
 
-- (IBAction)changeMapType:(id)sender {
-    if (jumpsMapView.mapType == MKMapTypeStandard)
+- (void)changeMapType{
+    if (jumpsMapView.mapType == MKMapTypeStandard){
         jumpsMapView.mapType = MKMapTypeSatellite;
-    else
+    } else if (jumpsMapView.mapType == MKMapTypeSatellite){
+        jumpsMapView.mapType = MKMapTypeHybrid;
+    } else if (jumpsMapView.mapType == MKMapTypeHybrid){
         jumpsMapView.mapType = MKMapTypeStandard;
+    }
 }
 
 - (IBAction)zoomsIn:(id)sender {
-    [jumpsMapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
-    MKCoordinateRegion region;
-    //Set Zoom level using Span
-    MKCoordinateSpan span;
-    region.center=jumpsMapView.region.center;
-    
-    span.latitudeDelta=jumpsMapView.region.span.latitudeDelta /2.0002;
-    span.longitudeDelta=jumpsMapView.region.span.longitudeDelta /2.0002;
-    region.span=span;
-    [jumpsMapView setRegion:region animated:TRUE];
+    [self zoomsMapIn:2.0002];
 }
 
 - (IBAction)zoomsOut:(id)sender {
@@ -106,15 +114,109 @@
 }
 
 - (IBAction)currentLocation:(id)sender {
-    [jumpsMapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+    //    [jumpsMapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+    //    jumpsMapView.showsUserLocation = NO;
+    //    [self zoomsMapIn:15001];
+    //    [jumpsMapView setCenterCoordinate:jumpsMapView.userLocation.location.coordinate animated:YES];
+    MKCoordinateRegion mapRegion;
+    mapRegion.center = jumpsMapView.userLocation.coordinate;
+    mapRegion.span = MKCoordinateSpanMake(0.001, 0.001);
+    [jumpsMapView setRegion:mapRegion animated: YES];
 }
 
 - (IBAction)reporting:(id)sender {
     [self showGrid];
 }
 
+- (IBAction)viewReportImage:(id)sender{
+    if (isViewReport == YES) {
+        btnCloseReportImage.hidden = NO;
+        reportView.hidden = YES;
+        parrentView.alpha = 1;
+        [parrentView setImage:[Jumer imageFromURL:currentViewReportImage]];
+    }else{
+        // Hide key board
+        
+        // Take a photo
+        lblMessage.hidden = YES;
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            picker.delegate = self;
+            [self presentModalViewController:picker animated:YES];
+        }else{
+            lblMessage.hidden = NO;
+            lblMessage.text = @"Device has no camera!";
+        }
+    }
+}
+
+- (IBAction)closeReportImage:(id)sender{
+    parrentView.alpha = 0.5;
+    parrentView.image = nil;
+    reportView.hidden = NO;
+    btnCloseReportImage.hidden = YES;
+}
+
+- (IBAction)shareReport:(id)sender{
+    @try {
+        lblMessage.hidden = YES;
+        sharedAnnotation.title = userName;
+        sharedAnnotation.coordinate = [[[jumpsMapView userLocation] location] coordinate];
+        sharedAnnotation.reportDetail = txtReportDetail.text;
+        sharedAnnotation.title = [txtUserName.text isEqualToString:@""]?userName : txtUserName.text;
+        sharedAnnotation.userId = userId;
+        
+        sharedAnnotation.reportImage = imageTakeAPhoto;
+        sharedAnnotation.reportTime = [Jumer getCurrentDateString];
+        NSDictionary *result = [Jumer postDataToUrl:[Jumer API_SHARE_REPORT] theJson:[Jumer parseAnnotationToJSONObject:sharedAnnotation]];
+        if ([[result objectForKey:@"jumer"] isEqualToString:@"true"]) {
+            sharedAnnotation.userId = [[NSString stringWithFormat:@"%@", [result objectForKey:@"userId"]] intValue];
+            userName = sharedAnnotation.title;
+            sharedAnnotation.annotationId = [[NSString stringWithFormat:@"%@", [result objectForKey:@"userId"]] intValue];
+            parrentView.hidden = YES;
+            reportView.hidden = YES;
+            // Add into dict
+            if(![annotationsArray containsObject:[NSNumber numberWithInt:sharedAnnotation.annotationId]]){
+                [annotationsArray addObject:[NSNumber numberWithInt:sharedAnnotation.annotationId]];
+            }
+            
+            [self addPinToMap:sharedAnnotation];
+            [Jumer writeStringToFile:[Jumer parseUserToJSONObject:sharedAnnotation.userId therUserName:sharedAnnotation.title] theFileName:[Jumer USER_PATH]];
+            // Clear text
+            txtReportDetail.text = @"";
+            // Hide keyboard
+            [txtUserName resignFirstResponder];
+            [txtReportDetail resignFirstResponder];
+            
+            // Show current location
+            MKCoordinateRegion mapRegion;
+            mapRegion.center = jumpsMapView.userLocation.coordinate;
+            mapRegion.span = MKCoordinateSpanMake(0.001, 0.001);
+            [jumpsMapView setRegion:mapRegion animated: YES];
+        }else{
+            lblMessage.hidden = NO;
+            [lblMessage setText:@"Share failed!"];
+        }
+    }
+    @catch (NSException *exception) {
+        lblMessage.hidden = NO;
+        [lblMessage setText:@"Can't connect to server!"];
+        NSLog(@"%@", exception);
+    }
+}
+
+- (IBAction)annotationViewClick:(id) sender {
+    //    NSLog(@"clicked");
+    UIButton *button = (UIButton*)sender;
+    [self showReported:button.property];
+}
+
 #pragma Show reporting
+
 - (void)showGrid {
+    parrentView.hidden = YES;
+    reportView.hidden = YES;
     NSInteger numberOfOptions = 12;
     NSArray *items = @[
                        [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"accident"]] title:@"accident"],
@@ -124,16 +226,16 @@
                        [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"constructor"]] title:@"constructor"],
                        [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"rain"]] title:@"rain"],
                        [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"fire"]] title:@"fire"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"routing"]] title:@"routing"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"camera"]] title:@"camera"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"chatchit"]] title:@"chat chit"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"robber"]] title:@"robber"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"lost"]] title:@"lost"],
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"meteorite"]] title:@"meteorite"],
                        [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"help"]] title:@"help"],
-                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"meteorite"]] title:@"meteorite"]
+                       [[RNGridMenuItem alloc] initWithImage:[UIImage imageNamed:[pins objectForKey:@"map type"]] title:@"map type"]
                        ];
     
     RNGridMenu *av = [[RNGridMenu alloc] initWithItems:[items subarrayWithRange:NSMakeRange(0, numberOfOptions)]];
     av.delegate = self;
-    //av.itemFont =[UIFont fontWithName:@"04b_19" size:15];
+    av.itemFont = [UIFont fontWithName:[Jumer FONT_LOVE_IS_COMPLICATED_AGAIN] size:15];
     av.title = @"JUMPS";
     av.bounces = NO;
     av.itemTextColor = [UIColor blackColor];
@@ -142,45 +244,61 @@
 }
 
 - (void)gridMenu:(RNGridMenu *)gridMenu willDismissWithSelectedItem:(RNGridMenuItem *)item atIndex:(NSInteger)itemIndex {
+    isViewReport = NO;
+    NSString *pinKey;
     switch (itemIndex) {
         case 0: // accident
-            [self addPinToMap :[pins objectForKey:@"pin_accident"] thePinType:@"accident"];
+            sharedAnnotation.reportType = @"accident";
+            pinKey = @"pin_accident";
             break;
         case 1: // traffic jams
-            [self addPinToMap :[pins objectForKey:@"pin_jam"] thePinType:@"traffic jams"];
+            sharedAnnotation.reportType = @"traffic jams";
+            pinKey = @"pin_jam";
             break;
         case 2: // police
-            [self addPinToMap :[pins objectForKey:@"pin_police"] thePinType:@"police"];
+            sharedAnnotation.reportType = @"police";
+            pinKey = @"pin_police";
             break;
         case 3: // cheat gas
-            [self addPinToMap :[pins objectForKey:@"pin_gas"] thePinType:@"cheat gas"];
+            sharedAnnotation.reportType = @"cheat gas";
+            pinKey = @"pin_cheat gas";
             break;
         case 4: // constructor
-            [self addPinToMap :[pins objectForKey:@"pin_constructor"] thePinType:@"constructor"];
+            sharedAnnotation.reportType = @"constructor";
+            pinKey = @"pin_constructor";
             break;
         case 5: // rain
-            [self addPinToMap :[pins objectForKey:@"pin_rain"] thePinType:@"rain"];
+            sharedAnnotation.reportType = @"rain";
+            pinKey = @"pin_rain";
             break;
         case 6: //fire
-            [self addPinToMap :[pins objectForKey:@"pin_fire"] thePinType:@"fire"];
+            sharedAnnotation.reportType = @"fire";
+            pinKey = @"pin_fire";
             break;
         case 7:// routing
-            [self addPinToMap :[pins objectForKey:@"pin_routing"] thePinType:@"routing"];
+            sharedAnnotation.reportType = @"robber";
+            pinKey = @"pin_robber";
             break;
         case 8: // camera
-            [self addPinToMap :[pins objectForKey:@"pin_camera"] thePinType:@"camera"];
+            sharedAnnotation.reportType = @"lost";
+            pinKey = @"pin_lost";
             break;
-        case 9: // chat chit
-            
+        case 9: // meteorite
+            sharedAnnotation.reportType = @"meteorite";
+            pinKey = @"pin_meteorite";
+            break;
             break;
         case 10: // help
-            [self addPinToMap :[pins objectForKey:@"pin_help"] thePinType:@"help"];
+            sharedAnnotation.reportType = @"help";
+            pinKey = @"pin_help";
             break;
-        case 11://        meteorite
-            [self addPinToMap :[pins objectForKey:@"pin_meteorite"] thePinType:@"meteorite"];
-            break;
+        case 11:// change map type
+            [self changeMapType];
         default:
             break;
+    }
+    if(itemIndex != 11){
+        [self showReportMarker];
     }
 }
 
@@ -190,44 +308,51 @@
     pins = [[NSDictionary alloc] init];
     pins = @{@"accident":@"accident.png",
              @"pin_accident":@"pin_accident.png",
-             @"camera":@"camera.png",
-             @"pin_camera":@"pin_camera.png",
+             @"lost":@"lost.png",
+             @"pin_lost":@"pin_lost.png",
              @"constructor":@"constructor.png",
              @"pin_constructor":@"pin_constructor.png",
              @"fire":@"fire.png",
              @"pin_fire":@"pin_fire.png",
              @"cheat gas":@"gas.png",
-             @"pin_gas":@"pin_gas.png",
+             @"pin_cheat gas":@"pin_gas.png",
              @"help":@"help.png",
              @"pin_help":@"pin_help.png",
              @"traffic jams":@"jam.png",
-             @"pin_jam":@"pin_jam.png",
+             @"pin_traffic jams":@"pin_jam.png",
              @"meteorite":@"meteorite.png",
              @"pin_meteorite":@"pin_meteorite.png",
              @"police":@"police.png",
              @"pin_police":@"pin_police.png",
              @"rain":@"rain.png",
              @"pin_rain":@"pin_rain.png",
-             @"routing":@"routing.png",
-             @"pin_routing":@"pin_routing.png",
-             @"chatchit":@"chatchit.png",
+             @"robber":@"robber.png",
+             @"pin_robber":@"pin_robber.png",
+             @"map type":@"satellite.png",
              @"anonymous":@"anonymous.png",
-             @"information":@"information.png"};
+             @"information":@"information.png",
+             @"clip":@"clip.png"};
 }
 
-- (void)addPinToMap:(NSString*) pinImage thePinType:(NSString*)pinType {
-    currentLocation = [[[jumpsMapView userLocation] location] coordinate];
-//    TrafficAnnotation * annotation = [[TrafficAnnotation alloc] initWithTitle:userName andCoordinate:currentLocation];
-    TrafficAnnotation* annotation = [[TrafficAnnotation alloc] initWithReport:userName andCoordinate:currentLocation andDetail:@"This is test repoting..." andImage:@"http://t2.gstatic.com/images?q=tbn:ANd9GcToJO1MrE8oftjQYa0tsE1xLggTd3CDmPY4yq5p7vPViQoFNvHGxw" andTime:@"time" andType:pinType];
-    annotation.title = userName;
-    CLLocation * location = [[CLLocation alloc] initWithLatitude:currentLocation.latitude longitude:currentLocation.longitude];
+- (void)addPinToMap:(TrafficAnnotation*)annotation{
+    CLLocation * location = [[CLLocation alloc] initWithLatitude:annotation.coordinate.latitude longitude:annotation.coordinate.longitude];
     [self getAddressFromLatLon:location theAnnotation:annotation];
     [jumpsMapView addAnnotation:annotation];
-    currentPin = pinImage;
 }
 
-- (MKAnnotationView *)mapView:(MKMapView *)map viewForAnnotation:(id <MKAnnotation>)annotation {
+#pragma MKMapView
 
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+    //    jumpsMapView.centerCoordinate = userLocation.location.coordinate;
+    //    [self zoomsMapIn:15001];
+    MKCoordinateRegion mapRegion;
+    mapRegion.center = jumpsMapView.userLocation.coordinate;
+    mapRegion.span = MKCoordinateSpanMake(0.001, 0.001);
+    [jumpsMapView setRegion:mapRegion animated: YES];
+}
+
+//- (MKAnnotationView *)mapView:(MKMapView *)map viewForAnnotation:(id <MKAnnotation>)annotation {
+- (MKAnnotationView *)mapView:(MKMapView *)map viewForAnnotation:(TrafficAnnotation*)annotation {
     if ([annotation isKindOfClass:[MKUserLocation class]])
     {
         ((MKUserLocation *)annotation).title = @"Here we go...";
@@ -241,16 +366,15 @@
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
     }
     
-    annotationView.image = [UIImage imageNamed:currentPin];
-    annotationView.canShowCallout = YES; // show title
+    annotationView.image = [UIImage imageNamed:[pins objectForKey: [NSString stringWithFormat:@"pin_%@", annotation.reportType]]];
     
     CGSize size = CGSizeMake(37, 37);
     
-    UIImageView *leftIconView = [[UIImageView alloc] initWithImage:[self scaleImage:[UIImage imageNamed:[pins objectForKey:@"anonymous"]] scaledToSize:size]];
+    UIImageView *leftIconView = [[UIImageView alloc] initWithImage:[Jumer scaleImage:[UIImage imageNamed:[pins objectForKey:@"anonymous"]] scaledToSize:size]];
     annotationView.leftCalloutAccessoryView = leftIconView;
     
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [rightButton setBackgroundImage:[self scaleImage:[UIImage imageNamed:[pins objectForKey:@"information"]] scaledToSize:size] forState:UIControlStateNormal];
+    [rightButton setBackgroundImage:[Jumer scaleImage:[UIImage imageNamed:[pins objectForKey:@"information"]] scaledToSize:size] forState:UIControlStateNormal];
     rightButton.frame = CGRectMake(0, 0, 27, 27);
     
     rightButton.property = annotation;
@@ -258,40 +382,29 @@
     annotationView.rightCalloutAccessoryView = rightButton;
     
     annotationView.annotation = annotation;
+    annotationView.canShowCallout = YES; // show title
     return annotationView;
 }
 
-- (IBAction) annotationViewClick:(id) sender {
-//    NSLog(@"clicked");
-    UIButton *button = (UIButton*)sender;
-    [self showReported:button.property];
+// Move map
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+    [NSTimer scheduledTimerWithTimeInterval:2.0
+                                     target:self
+                                   selector:@selector(getReports)
+                                   userInfo:nil
+                                    repeats:NO];
+//    [self getReports];
+    //    [jumpsMapView setUserTrackingMode:MKUserTrackingModeNone animated:NO];
 }
 
-- (UIImage *)scaleImage:(UIImage *)image scaledToSize:(CGSize)newSize {
-    //UIGraphicsBeginImageContext(newSize);
-    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
-    // Pass 1.0 to force exact pixel size.
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
--(UIImage*)scaleImage:(UIImage*)image scaledToPecent:(float)percent {
-    return [UIImage imageWithCGImage:[image CGImage]
-                               scale:(image.scale * percent)
-                         orientation:(image.imageOrientation)];
-}
-
--(void)getAddressFromLatLon:(CLLocation*) location theAnnotation:(TrafficAnnotation*) annotation {
+- (void)getAddressFromLatLon:(CLLocation*) location theAnnotation:(TrafficAnnotation*) annotation {
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
      {
          if(placemarks && placemarks.count > 0)
          {
              CLPlacemark *placemark= [placemarks objectAtIndex:0];
-//             currentAddress = [NSString stringWithFormat:@"%@ , %@ , %@",[placemark thoroughfare],[placemark locality],[placemark administrativeArea]];
+             //             currentAddress = [NSString stringWithFormat:@"%@ , %@ , %@",[placemark thoroughfare],[placemark locality],[placemark administrativeArea]];
              currentAddress = [NSString stringWithFormat:@"%@, %@, %@",[placemark thoroughfare],[placemark locality], [placemark country]];
              annotation.subtitle = currentAddress;
              NSLog(@"The annotation address:%@", currentAddress);
@@ -299,115 +412,174 @@
      }];
 }
 
--(void)showReportAlert:(TrafficAnnotation*)annotation {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:annotation.reportType
-                                                    message:annotation.reportDetail
-                                                   delegate:self
-                                          cancelButtonTitle:@"Done"
-                                          otherButtonTitles:nil];
+- (void)showReported:(TrafficAnnotation*)annotation{
+    isViewReport = YES;
+    parrentView.hidden = NO;
+    reportView.hidden = NO;
     
-//    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-//    UITextField *textField = [alert textFieldAtIndex:0];
-//    textField.keyboardType = UIKeyboardTypeDefault;
-//    textField.placeholder = @"Report reason...";
+    lblReportDetail.hidden = NO;
+    lblReportUser.hidden = NO;
     
-    UIImageView *tempImageView=[[UIImageView alloc]initWithFrame:CGRectMake(20,20,50,50)];
-    tempImageView.image=[UIImage imageNamed:[pins objectForKey:annotation.reportType]];
-    [alert addSubview:tempImageView];
+    txtReportDetail.hidden =YES;
+    txtUserName.hidden = YES;
+    btnShare.hidden =YES;
+    lblMessage.hidden = YES;
     
-    [alert show];
-}
-
--(void)showReported:(TrafficAnnotation*)annotation{
-    viewingReport=YES;
-    if ([self.view.subviews containsObject:parentsView]==YES) {
-        parentsView.hidden = NO;
+    [lblReportDetail setText: [annotation.reportDetail isEqualToString:@""]?@"No details": [Jumer toOriginalString:annotation.reportDetail]];
+    lblReportDetail.numberOfLines = 0;
+    
+    NSDate *date = [Jumer parseStringToDate:annotation.reportTime];
+    NSDateComponents *components = [Jumer diffDates:date anotherDate:[NSDate date]];
+    if (components.year > 0) {
+        [lblReportTime setText:[NSString stringWithFormat:@"%i year%@ ago.", components.year, components.year>1?@"s":@""]];
+    }else if (components.month > 0){
+        [lblReportTime setText:[NSString stringWithFormat:@"%i month%@ ago.", components.month, components.month>1?@"s":@""]];
+    }else if (components.day > 0){
+        [lblReportTime setText:[NSString stringWithFormat:@"%i day%@ ago.", components.day, components.day>1?@"s":@""]];
+    }else if (components.hour > 0){
+        [lblReportTime setText:[NSString stringWithFormat:@"%i hour%@ ago.", components.hour, components.hour>1?@"s":@""]];
+    }else if (components.minute > 0){
+        [lblReportTime setText:[NSString stringWithFormat:@"%i minute%@ ago.", components.minute, components.minute>1?@"s":@""]];
     }else{
-        [self.view addSubview:parentsView];
+        [lblReportTime setText:[NSString stringWithFormat:@"Just now!"]];
     }
     
-    // Set title
-    [self clearSubViewReported];
-    
-    UIImage* image = [self scaleImage:[UIImage imageNamed:[pins objectForKey:annotation.reportType]] scaledToPecent:2];
-    imageReportType = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, image.size.width, image.size.height)];
-    [imageReportType setImage:image];
-    
-    labelReportType = [[UILabel alloc] initWithFrame:CGRectMake(image.size.width + 15, 15, 100, image.size.height)];
-    [labelReportType setText:annotation.reportType];
-    [labelReportType sizeToFit];
-    
-    [titleReported addSubview:labelReportType];
-    [titleReported addSubview:imageReportType];
-    
-    // add time
-    timeReported.frame = CGRectMake(10, 50, reportDetailView.bounds.size.width-20, 50);
-    [timeReported setText:[NSString stringWithFormat:@"at: %@", annotation.reportTime]];
-    timeReported.numberOfLines = 0;
-    [timeReported sizeToFit];
-    
-    // add user
-    userReported.frame = CGRectMake(10, 50 + timeReported.bounds.size.height, reportDetailView.bounds.size.width-20, 50);
-    [userReported setText:[NSString stringWithFormat:@"by: %@", annotation.title]];
-    userReported.numberOfLines = 0;
-    [userReported sizeToFit];
-    
-    // add detail
-    detailReported.frame = CGRectMake(10, 60 + userReported.bounds.size.height + timeReported.bounds.size.height, reportDetailView.bounds.size.width-20, 50);
-    [detailReported setText:[annotation.reportDetail isEqualToString:@""] ? @"No detail" : annotation.reportDetail];
-    detailReported.numberOfLines = 0;
-    [detailReported sizeToFit];
-    
-    
-    imageReported.frame = CGRectMake(10, 70 + detailReported.bounds.size.height + timeReported.bounds.size.height + userReported.bounds.size.height, reportDetailView.bounds.size.width-20, 400);
-    if (![annotation.reportImage isEqual:@""]) {
-        NSURL *url = [NSURL URLWithString:annotation.reportImage];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *img = [[UIImage alloc] initWithData:data];
-        imageReported.image = img;
+    lblReportTime.textAlignment = NSTextAlignmentLeft;
+    [lblReportTitle setText:annotation.reportType];
+    [lblReportUser setText:[NSString stringWithFormat:@"by: %@", [Jumer toOriginalString:annotation.title]]];
+    [imgReportType setImage:[UIImage imageNamed:[pins objectForKey:annotation.reportType]]];
+    if ([annotation.reportImage isEqualToString:@""]) {
+        btnReportImage.enabled = NO;
     }else{
-        imageReported.image = [pins objectForKey:@"anonymous"];
-        
+        btnReportImage.enabled = YES;
+        currentViewReportImage = annotation.reportImage;
     }
-    [imageReported sizeToFit];
-    reportDetailView.contentSize = CGSizeMake((reportDetailView.bounds.size.width > imageReported.bounds.size.width)?reportDetailView.bounds.size.width : imageReported.bounds.size.width, 60 + detailReported.bounds.size.height + imageReported.bounds.size.height);
-    
-    [reportDetailView sizeToFit];
 }
 
--(void)clearSubViewReported{
-    NSArray *viewsToRemove = [titleReported subviews];
-    for (UIView *v in viewsToRemove) {
-        [v removeFromSuperview];
-    }
-    imageReportType = nil;
-    imageReportType = nil;
+- (void)showReportMarker{
+    isViewReport = NO;
+    parrentView.hidden = NO;
+    reportView.hidden = NO;
     
+    lblReportDetail.hidden = YES;
+    lblReportUser.hidden = YES;
+    
+    txtReportDetail.hidden =NO;
+    txtUserName.hidden = NO;
+    btnShare.hidden = NO;
+    lblMessage.hidden = YES;
+    
+    
+    [lblReportTime setText:@"take a photo"];
+    lblReportTime.textAlignment = NSTextAlignmentRight;
+    [lblReportTitle setText:sharedAnnotation.reportType];
+    [txtUserName setText:[userName isEqualToString:@"Anonymous"] ? @"":userName];
+    [imgReportType setImage:[UIImage imageNamed:[pins objectForKey:sharedAnnotation.reportType]]];
+    btnReportImage.enabled=YES;
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (viewingReport==YES) {
+- (void)getReports{
+    @try {
+        NSLog(@"Get reporting...");
+        CLLocationCoordinate2D northEast, southWest;
+        northEast = [jumpsMapView convertPoint:CGPointMake(jumpsMapView.frame.size.width, 0) toCoordinateFromView:jumpsMapView];
+        southWest = [jumpsMapView convertPoint:CGPointMake(0, jumpsMapView.frame.size.height) toCoordinateFromView:jumpsMapView];
+
+        NSDictionary *result = [Jumer postDataToUrl:[Jumer API_GET_REPORTS] theJson:[Jumer parseSquareMapToJSONObject:northEast theSouthWest:southWest theType:@"all"]];
+        if (result != nil) {
+            NSData *data = [result objectForKey:@"jumer"];
+            for (NSDictionary *dataDict in data) {
+                CLLocationCoordinate2D coord;
+                coord.latitude = [[dataDict objectForKey:@"latitude"] floatValue];
+                coord.longitude = [[dataDict objectForKey:@"longitude"] floatValue];
+                TrafficAnnotation *annotation = [[TrafficAnnotation alloc] initWithCoordinate:coord];
+                annotation.title = [dataDict objectForKey:@"userName"];
+                annotation.reportDetail = [dataDict objectForKey:@"detail"];
+                annotation.reportImage = [dataDict objectForKey:@"image"];
+                annotation.annotationId = [[dataDict objectForKey:@"id"] intValue];
+                annotation.userId = [[dataDict objectForKey:@"userId"] intValue];
+                annotation.reportType = [dataDict objectForKey:@"type"];
+                annotation.reportTime = [dataDict objectForKey:@"time"];
+                if(![annotationsArray containsObject:[NSNumber numberWithInt:annotation.annotationId]]){
+                    [annotationsArray addObject:[NSNumber numberWithInt:annotation.annotationId]];
+//                    sharedAnnotation = annotation;
+                    [self addPinToMap:annotation];
+                }
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Load report failed!");
+    }
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (parrentView.hidden==NO && btnCloseReportImage.hidden==YES) {
         UITouch *touch = [[event allTouches] anyObject];
         CGPoint location = [touch locationInView:touch.view];
-        if (location.x < reportDetailView.center.x-reportDetailView.bounds.size.width/2 || location.x > reportDetailView.center.x+reportDetailView.bounds.size.width/2 || location.y < reportDetailView.center.y-reportDetailView.bounds.size.height/2 || location.y > reportDetailView.center.y + reportDetailView.bounds.size.height/2) {
-            parentsView.hidden = YES;
-            viewingReport=NO;
+        if (location.x < reportView.center.x-reportView.bounds.size.width/2 || location.x > reportView.center.x+reportView.bounds.size.width/2 || location.y < reportView.center.y-reportView.bounds.size.height/2 || location.y > reportView.center.y + reportView.bounds.size.height/2) {
+            parrentView.hidden = YES;
+            reportView.hidden = YES;
+            [txtReportDetail resignFirstResponder];
+            [txtUserName resignFirstResponder];
         }
     }
 }
 
-- (void)alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSLog(@"%d", buttonIndex);
-    if(buttonIndex > 0) {
-        UITextField *textField = [alert textFieldAtIndex:0];
-        NSString *text = textField.text;
-        if(text == nil) {
-            return;
-        } else {
-            //do something with text
-        }
-    }
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [txtUserName resignFirstResponder];
+    [txtReportDetail resignFirstResponder];
+    return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    return (newLength > 140) ? NO : YES;
+}
+
+-(void)zoomsMapIn:(float)level{
+    [jumpsMapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
+    MKCoordinateRegion region;
+    //Set Zoom level using Span
+    MKCoordinateSpan span;
+    region.center=jumpsMapView.region.center;
+    
+    span.latitudeDelta=jumpsMapView.region.span.latitudeDelta /level; // 2.0002
+    span.longitudeDelta=jumpsMapView.region.span.longitudeDelta /level;
+    region.span=span;
+    [jumpsMapView setRegion:region animated:TRUE];
+}
+
+#pragma Take a photo
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo{
+    imageTaken = image;
+    [[picker parentViewController] dismissModalViewControllerAnimated:YES];
+    
+    if (image != nil) {
+        [lblReportTime setText:@"the photo ziped"];
+    }else{
+        [lblMessage setText:@"No photo snapped!"];
+    }
+    [self showReportMarker];
+    
+}
+
+# pragma keyboard
+-(void) keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    reportView.center = CGPointMake(reportView.center.x, self.view.bounds.size.height-(keyboardBounds.size.height + reportView.bounds.size.height/2)-2);
+    NSLog(@"Will show key board");
+}
+
+-(void) keyboardWillHide:(NSNotification *)note{
+    reportView.center = self.view.center;
+    NSLog(@"Will hide key board");
+}
 
 @end
