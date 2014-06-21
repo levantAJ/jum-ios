@@ -1,7 +1,7 @@
-jum-ios
+JUMPs project
 =======
 
-This code jum project for iOS
+This code JUMPs project for iOS
 
 <div>I think a idea, that can detect problem a road! I call: JUMPS project</div>
 <div>Every body can be see all problems around their, they can report problem.<div>
